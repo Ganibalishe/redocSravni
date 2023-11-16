@@ -1,0 +1,296 @@
+components:
+  schemas:
+    BankIdentifier:
+      description: Неверный идентификатор банка
+      properties:
+        errorDescription:
+          additionalProperties: false
+          properties:
+            additional:
+              nullable: true
+              type: object
+            code:
+              enum:
+                - '03.01'
+              type: string
+            description:
+              enum:
+                - bankIdentifier
+              type: string
+            text:
+              enum:
+                - Неверный идентификатор банка
+              type: string
+          required:
+            - code
+            - description
+            - text
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      required:
+        - result
+        - errorDescription
+      title: Неверный идентификатор банка
+      type: object
+    AccountNotFound:
+      description: Не найден аккаунт в банке
+      properties:
+        errorDescription:
+          additionalProperties: false
+          properties:
+            additional:
+              nullable: true
+              type: object
+            code:
+              enum:
+                - '03.02'
+              type: string
+            description:
+              enum:
+                - accountNotFound
+              type: string
+            text:
+              enum:
+                - По данному телефону не найдет счет в банке
+              type: string
+          required:
+            - code
+            - description
+            - text
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      required:
+        - result
+        - errorDescription
+      title: Не найден аккаунт в банке
+      type: object
+    LimitExceeded:
+      description: Превышен лимит СБП
+      properties:
+        errorDescription:
+          additionalProperties: false
+          properties:
+            additional:
+              nullable: true
+              type: object
+            code:
+              enum:
+                - '03.03'
+              type: string
+            description:
+              enum:
+                - limitExceeded
+              type: string
+            text:
+              enum:
+                - Превышен лимит запросов в СБП за последние стуки
+              type: string
+          required:
+            - code
+            - description
+            - text
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      required:
+        - result
+        - errorDescription
+      title: Превышен лимит СБП
+      type: object
+    BankBlocked:
+      description: Проблема с банком
+      properties:
+        errorDescription:
+          additionalProperties: false
+          properties:
+            additional:
+              nullable: true
+              type: object
+            code:
+              enum:
+                - '03.04'
+              type: string
+            description:
+              enum:
+                - bankBlocked
+              type: string
+            text:
+              enum:
+                - На счет указанного банка невозможно перевести займ
+              type: string
+          required:
+            - code
+            - description
+            - text
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      required:
+        - result
+        - errorDescription
+      title: Проблема с банком
+      type: object
+    SbpBlocked:
+      description: СБП не доступен клиенту
+      properties:
+        errorDescription:
+          additionalProperties: false
+          properties:
+            additional:
+              nullable: true
+              type: object
+            code:
+              enum:
+                - '03.05'
+              type: string
+            description:
+              enum:
+                - sbpBlocked
+              type: string
+            text:
+              enum:
+                - Получатель не дал согласия на перевод денежных средств через СБП
+              type: string
+          required:
+            - code
+            - description
+            - text
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      required:
+        - result
+        - errorDescription
+      title: СБП не доступен клиенту
+      type: object
+    PaymentSystemError:
+      description: Ошибка платежной системы
+      properties:
+        errorDescription:
+          additionalProperties: false
+          properties:
+            additional:
+              nullable: true
+              type: object
+            code:
+              enum:
+                - '03.06'
+              type: string
+            description:
+              enum:
+                - paymentSystemError
+              type: string
+            text:
+              enum:
+                - Ошибка платежной системы
+              type: string
+          required:
+            - code
+            - description
+            - text
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      required:
+        - result
+        - errorDescription
+      title: Ошибка платежной системы
+      type: object
+    BankRefusal:
+      description: Банк не подтвердил платеж
+      properties:
+        errorDescription:
+          additionalProperties: false
+          properties:
+            additional:
+              nullable: true
+              type: object
+            code:
+              enum:
+                - '03.07'
+              type: string
+            description:
+              enum:
+                - bankRefusal
+              type: string
+            text:
+              enum:
+                - Банк не подтвердил возможность платежа
+              type: string
+          required:
+            - code
+            - description
+            - text
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      required:
+        - result
+        - errorDescription
+      title: Банк не подтвердил платеж
+      type: object
+    BankCardRefused:
+      description: Ошибка привязки карты
+      properties:
+        errorDescription:
+          additionalProperties: false
+          properties:
+            additional:
+              type: object
+              properties: 
+                url: 
+                  type: string
+                  description: новый урл iframe для привязки карты
+                createdAt:
+                  type: date-time
+                  description: время создания урла
+                expiresAt:
+                  type: date-time
+                  description: время протухания урла
+              required:
+                - url
+                - createdAt
+                - expiresAt
+            code:
+              enum:
+                - '06.01'
+              type: string
+            description:
+              enum:
+                - bankCardRefused
+              type: string
+            text:
+              enum:
+                - Произошла ошибка при попытке привязать банковскую карту
+              type: string
+          required:
+            - code
+            - description
+            - text
+            - additional
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      required:
+        - result
+        - errorDescription
+      title: Ошибка привязки карты
+      type: object

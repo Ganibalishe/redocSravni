@@ -1,0 +1,37 @@
+client/check:
+  post:
+    description: Метод, для первичной проверки клиента
+    summary: Метод, для первичной проверки клиента
+    requestBody:
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/MfoApiCheckRequest"
+    responses:
+      "200":
+        description: Ответ с result == Success, означает что пользователь прошел первичную проверку и не имеет запретов на стороне МФО
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/Success"
+                - $ref: "#/components/schemas/ValidationError"
+                - $ref: "#/components/schemas/Failed"
+                - $ref: "#/components/schemas/BlackList"
+                - $ref: "#/components/schemas/OpenApplications"
+                - $ref: "#/components/schemas/ClientMoratorium"
+                - $ref: "#/components/schemas/Reject"
+    tags:
+      - Методы на стороне МФО
+components:
+  schemas:
+    MfoApiCheckRequest:
+      type: object
+      title: MfoApiCheckRequest
+      required:
+        - phoneNumber
+      properties:
+        phoneNumber:
+          type: string
+          description: Номер телефона пользователя. Передается 11 цифр без “+”
+          example: 79031111111

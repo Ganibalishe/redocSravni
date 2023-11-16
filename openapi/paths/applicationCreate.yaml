@@ -1,0 +1,341 @@
+application/create:
+  post:
+    description: Метод, для запроса к партнеру на создание заявки по займу
+    summary: Метод создания заявки
+    requestBody:
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/MfoApiCreateRequest"
+    responses:
+      "200":
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/CreateApplicationResponse"
+                - $ref: "#/components/schemas/ValidationError"
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/Failed
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/OpenApplications
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/BlackList
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ClientMoratorium
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/InappropriateRegion
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ManyPhoneNumbers
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/DuplicatePhoneNumber
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/Reject
+    tags:
+      - Методы на стороне МФО
+components:
+  schemas:
+    CreateApplicationResponse:
+      type: object
+      title: Заявка создана
+      properties:
+        result:
+          enum:
+            - success
+          type: string
+        context:
+          type: object
+          properties:
+            applicationId:
+              type: string
+              description: id заявки в системе партнера
+          required:
+            - applicationId
+      required:
+        - context
+        - result
+
+    MfoApiCreateRequest:
+      type: object
+      title: MfoApiCreateRequest
+      required:
+        - flowId
+        - requestedAmount
+        - requestedTermValue
+        - requestedTermType
+        - requestedRepaidDate
+        - clientInfo
+        - paymentInfo
+      properties:
+        flowId:
+          type: string
+          description: Id анкеты на стороне Сравни Ру
+
+        requestedAmount:
+          type: number
+          description: сумма займа
+
+        requestedTermValue:
+          type: integer
+          description: срок займа
+
+        requestedTermType:
+          type: string
+          enum:
+            - days
+            - months
+          description: Тип срока займа
+
+        requestedRepaidDate:
+          type: string
+          format: date
+          description: указанная клиентом желаемая дата возврата займа
+
+        clientInfo:
+          type: object
+          description: объект с данными клиента
+
+          required:
+            - name
+            - lastName
+            - gender
+            - maritalStatus
+            - amountOfChildren
+            - education
+            - contacts
+            - documents
+            - personalDataAgree
+            - employment
+            - incomes
+          properties:
+            name:
+              type: string
+              description: имя клиента
+
+            lastName:
+              type: string
+              description: фамилия клиента
+
+            middleName:
+              type: string
+              description: отчество клиента
+
+            gender:
+              type: string
+              enum:
+                - f
+                - m
+              description: пол клиента
+
+            maritalStatus:
+              type: string
+              enum:
+                - married
+                - single
+                - divorced
+                - widow
+              description: семейное положение
+
+            amountOfChildren:
+              type: string
+              enum:
+                - "0"
+                - "1"
+                - "2"
+                - "3"
+                - ">3"
+              description: кол-во детей
+
+            education:
+              type: string
+              enum:
+                - elementary
+                - secondary
+                - incompleteHigher
+                - higher
+              description: образование
+
+            contacts:
+              type: object
+              required:
+                - phoneNumber
+                - email
+              description: объект с контактами клиента
+              properties:
+                phoneNumber:
+                  type: string
+                  description: номер телефона клиента передается 11 цифр без “+”
+
+                email:
+                  type: string
+                  description: почта клиента
+
+            documents:
+              type: object
+              required:
+                - SNILS
+                - passport
+              description: объект с данными о документах клиента
+              properties:
+                SNILS:
+                  type: string
+                  description: снилс клиента
+
+                passport:
+                  type: object
+                  required:
+                    - number
+                    - series
+                    - dateOfBirth
+                    - dateOfIssue
+                    - authorityName
+                    - authorityCode
+                    - birthAddress
+                    - regAddress
+                    - regRegion
+                    - resAddress
+                    - resRegion
+                  properties:
+                    number:
+                      type: string
+                      description: номер паспорта
+
+                    series:
+                      type: string
+                      description: серия паспорта
+
+                    dateOfBirth:
+                      type: string
+                      format: date
+                      description: дата рождения
+
+                    dateOfIssue:
+                      type: string
+                      format: date
+                      description: дата выдачи документа
+
+                    authorityName:
+                      type: string
+                      description: кем выдан
+
+                    authorityCode:
+                      type: string
+                      description: код подразделения
+
+                    birthAddress:
+                      type: string
+                      description: место рождения
+
+                    regAddress:
+                      type: string
+                      description: адрес регистрации
+
+                    regRegion:
+                      type: string
+                      description: Код региона регистрации
+
+                    resAddress:
+                      type: string
+                      description: фактический адрес проживания
+
+                    resRegion:
+                      type: string
+                      description: Код региона проживания
+
+            personalDataAgree:
+              type: object
+              description: объект с данными о согласии об обработки персональных данных
+
+              required:
+                - phoneNumber
+                - SMSCode
+                - signDate
+              properties:
+                phoneNumber:
+                  type: string
+                  description: номер телефона, с которого было подписано согласие
+
+                SMSCode:
+                  type: string
+                  description: код подписания соглашения
+
+                signDate:
+                  type: string
+                  format: date
+                  description: код подписания соглашения
+
+            employment:
+              type: object
+              description: объект с данными о работе
+
+              required:
+                - type
+                - orgINN
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - employment
+                    - selfEmployed
+                    - unemployed
+                    - civilServant
+                    - individualEntrepreneur
+                    - military
+                  description: тип занятости
+
+                orgName:
+                  type: string
+                  description: юридическое название организации
+
+                orgINN:
+                  type: string
+                  description: инн организации
+
+                jobType:
+                  type: string
+                  enum:
+                    - specialist
+                    - departmentHead
+                    - headOfOrganization
+                    - serviceStaff
+                  description: тип должности
+
+                startDate:
+                  type: string
+                  description: дата начала работы в организации
+
+            incomes:
+              type: object
+              required:
+                - salaryAmount
+                - existingPayments
+              description: объект с данными о доходах и расходах
+              properties:
+                salaryAmount:
+                  type: integer
+                  description: сумма зарплаты
+
+                extraAmount:
+                  type: integer
+                  description: сумма дополнительного дохода
+
+                existingPayments:
+                  type: integer
+                  description: сумма платежей по кредитам
+
+            userDevice:
+              type: object
+              description: объект с данными о девайсе клиента
+              required:
+                - IP
+                - userAgent
+              properties:
+                IP:
+                  type: string
+                  description: IP-адрес клиента
+
+                userAgent:
+                  type: string
+                  description: Данные о браузере клиента
+
+        paymentInfo:
+          required:
+            - successURL
+          description: объект с описанием данных необходимых для перенаправления клиента после привязки карты
+          type: object
+          properties:
+            successURL:
+              type: string
+              description: ссылка на редирект клиента в приложение из iFrame после успешной привязки карты

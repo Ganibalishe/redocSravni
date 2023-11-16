@@ -1,0 +1,515 @@
+---
+components:
+  schemas:
+    OpenApplications:
+      description: Открытые заявки на займ
+      properties:
+        errorDescription:
+          additionalProperties: false
+          properties:
+            additional:
+              nullable: true
+              type: object
+            code:
+              enum:
+                - '01.01'
+              type: string
+            description:
+              enum:
+                - openApplications
+              type: string
+            text:
+              enum:
+                - У клиента имеются открытые заявки на займ
+              type: string
+          required:
+            - code
+            - description
+            - text
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      required:
+        - result
+        - errorDescription
+      title: Открытые заявки на займ
+      type: object
+    BlackList:
+      description: Клиент находится в черном списке
+      properties:
+        errorDescription:
+          additionalProperties: false
+          properties:
+            additional:
+              nullable: true
+              type: object
+            code:
+              enum:
+                - '01.02'
+              type: string
+            description:
+              enum:
+                - blackList
+              type: string
+            text:
+              enum:
+                - Данный клиент находится в черном списке
+              type: string
+          required:
+            - code
+            - description
+            - text
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      required:
+        - result
+        - errorDescription
+      title: Черный список
+      type: object
+    ClientMoratorium:
+      description: У клиента мораторий
+      properties:
+        errorDescription:
+          properties:
+            additional:
+              properties:
+                experationAt:
+                  example: '2023-12-01'
+                  type: date
+              required:
+                - expiresAt
+              type: object
+            code:
+              enum:
+                - '01.03'
+              type: string
+            description:
+              enum:
+                - clientMoratorium
+              type: string
+            text:
+              enum:
+                - На клиента наложен мораторий
+              type: string
+          required:
+            - code
+            - description
+            - text
+            - additional
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      required:
+        - result
+        - errorDescription
+      title: Наложен мораторий
+      type: object
+    InappropriateRegion:
+      description: Запрещенный регион
+      properties:
+        errorDescription:
+          additionalProperties: false
+          properties:
+            additional:
+              nullable: true
+              type: object
+            code:
+              enum:
+                - '01.04'
+              type: string
+            description:
+              enum:
+                - inappropriateRegion
+              type: string
+            text:
+              enum: 
+                - Выдача займов в данном регионе запрещена
+              type: string
+          required:
+            - code
+            - description
+            - text
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      required:
+        - result
+        - errorDescription
+      title: Запрещенный регион
+      type: object
+    ManyPhoneNumbers:
+      description: Множество номеров
+      properties:
+        errorDescription:
+          additionalProperties: false
+          properties:
+            additional:
+              nullable: true
+              type: object
+            code:
+              enum:
+                - '01.05'
+              type: string
+            description:
+              enum:
+                - manyPhoneNumbers
+              type: string
+            text:
+              enum: 
+                - У клиента найдено 2 и более номера телефона
+              type: string
+          required:
+            - code
+            - description
+            - text
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      required:
+        - result
+        - errorDescription
+      title: Множество номеров
+      type: object
+    DuplicatePhoneNumber:
+      description: Проблемы с номером телефона
+      properties:
+        errorDescription:
+          additionalProperties: false
+          properties:
+            additional:
+              nullable: true
+              type: object
+            code:
+              enum:
+                - '01.06'
+              type: string
+            description:
+              enum:
+                - duplicatePhoneNumber
+              type: string
+            text:
+              enum: 
+                - По данному номеру телефона найден клиент с другим ФИО
+              type: string
+          required:
+            - code
+            - description
+            - text
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      required:
+        - result
+        - errorDescription
+      title: Проблемы с номером телефона
+      type: object
+    Reject:
+      description: Отказ в выдаче займа
+      properties:
+        errorDescription:
+          additionalProperties: false
+          properties:
+            additional:
+              nullable: true
+              type: object
+            code:
+              enum:
+                - '01.07'
+              type: string
+            description:
+              enum:
+                - reject
+              type: string
+            text:
+              enum: 
+                - Данному клиенту отказано в выдаче займа
+              type: string
+          required:
+            - code
+            - description
+            - text
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      required:
+        - result
+        - errorDescription
+      title: Отказ в выдаче займа
+      type: object
+    Failed:
+      description: Техническая ошибка
+      properties:
+        errorDescription:
+          additionalProperties: false
+          properties:
+            additional:
+              nullable: true
+              type: object
+            code:
+              enum:
+                - '00.02'
+              type: string
+            description:
+              enum:
+                - failed
+              type: string
+            text:
+              example: Техническая ошибка
+              type: string
+          required:
+            - code
+            - description
+            - text
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      required:
+        - result
+        - errorDescription
+      title: Техническая ошибка
+      type: object
+    DocumentsRejected:
+      description: Документы отклонены
+      properties:
+        errorDescription:
+          properties:
+            additional:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items: 
+                    anyOf:
+                      - $ref: '#/components/schemas/PhotoError'
+                      - $ref: '#/components/schemas/RecognitionError'
+                      - $ref: '#/components/schemas/SeveralDocuments'
+                      - $ref: '#/components/schemas/FaceRecognitionError'
+                      - $ref: '#/components/schemas/DefectsInPhoto'
+                      - $ref: '#/components/schemas/ExceededSize'
+                      - $ref: '#/components/schemas/InvalidType'
+            code:
+              enum:
+                - '04.00'
+              type: string
+            description:
+              enum:
+                - documentsRejected
+              type: string
+            text:
+              enum: 
+                - Идентификационные документы отклонены
+              type: string
+          required:
+            - code
+            - description
+            - text
+            - additional
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      required:
+        - result
+        - errorDescription
+      title: Документы отклонены
+      type: object
+    PhotoError:
+      type: object
+      properties:
+        docType: 
+          type: string
+          enum:
+            - passportMain
+            - registration
+            - selfie
+        code:
+          type: string
+          enum:
+            - '04.01'
+        description:
+          type: string
+          enum:
+            - photoError
+        text: 
+          type: string
+          enum:
+            - На фотографии не обнаружен запрашиваемый документ
+      required:
+        - docType
+        - code
+        - description
+        - text
+    RecognitionError:
+      type: object
+      properties:
+        docType: 
+          type: string
+          enum:
+            - passportMain
+            - registration
+            - selfie
+        code:
+          type: string
+          enum:
+            - '04.02'
+        description:
+          type: string
+          enum:
+            - recognitionError
+        text: 
+          type: string
+          enum:
+            - Не удалось распознать документ на фото
+      required:
+        - docType
+        - code
+        - description
+        - text
+    SeveralDocuments:
+      type: object
+      properties:
+        docType: 
+          type: string
+          enum:
+            - passportMain
+            - registration
+            - selfie
+        code:
+          type: string
+          enum:
+            - '04.03'
+        description:
+          type: string
+          enum:
+            - severalDocuments
+        text: 
+          type: string
+          enum:
+            - На фотографии обнаружено несколько документов
+      required:
+        - docType
+        - code
+        - description
+        - text
+    FaceRecognitionError:
+      type: object
+      properties:
+        docType: 
+          type: string
+          enum:
+            - passportMain
+            - registration
+            - selfie
+        code:
+          type: string
+          enum:
+            - '04.04'
+        description:
+          type: string
+          enum:
+            - faceRecognitionError
+        text: 
+          type: string
+          enum:
+            - Не удалось распознать лицо
+      required:
+        - docType
+        - code
+        - description
+        - text
+    DefectsInPhoto:
+      type: object
+      properties:
+        docType: 
+          type: string
+          enum:
+            - passportMain
+            - registration
+            - selfie
+        code:
+          type: string
+          enum:
+            - '04.05'
+        description:
+          type: string
+          enum:
+            - defectsInPhoto
+        text: 
+          type: string
+          enum:
+            - На фото присутствуют блики или другие факторы мешающие распознаванию документа
+      required:
+        - docType
+        - code
+        - description
+        - text
+    ExceededSize:
+      type: object
+      properties:
+        docType: 
+          type: string
+          enum:
+            - passportMain
+            - registration
+            - selfie
+        code:
+          type: string
+          enum:
+            - '04.06'
+        description:
+          type: string
+          enum:
+            - exceededSize
+        text: 
+          type: string
+          enum:
+            - Pазмер файла превышает допустимый лимит
+      required:
+        - docType
+        - code
+        - description
+        - text
+    InvalidType:
+      type: object
+      properties:
+        docType: 
+          type: string
+          enum:
+            - passportMain
+            - registration
+            - selfie
+        code:
+          type: string
+          enum:
+            - '04.07'
+        description:
+          type: string
+          enum:
+            - invalidType
+        text: 
+          type: string
+          enum:
+            - Недопустимый тип файла
+      required:
+        - docType
+        - code
+        - description
+        - text

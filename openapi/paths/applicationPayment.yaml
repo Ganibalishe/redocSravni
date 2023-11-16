@@ -1,0 +1,103 @@
+application/{applicationId}/payment:
+  post:
+    summary: Метод для передачи оплаты по займу
+    description: Метод для уведомления Сравни об оплате по займу
+    parameters:
+      - name: applicationId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Идентификатор заявки
+    tags:
+      - Методы на стороне Сравни РУ
+    requestBody:
+      content:
+        application/json:
+          schema:
+            title: Метод для передачи оплаты по займу
+            type: object
+            description: Метод для передачи оплаты по займу
+            properties:
+              context:
+                properties:
+                  debtBalance:
+                    format: float
+                    type: number
+                    description: остаток долга
+                  interestAmount:
+                    format: float
+                    type: number
+                    description: сумма выплаченных процентов клиентом
+                  paymentAmount:
+                    format: float
+                    type: number
+                    description: сумма платежа
+                  paymentDate:
+                    format: date-time
+                    type: string
+                    description: дата и время платежа
+                  paymentId:
+                    type: string
+                    description: id платежа в системе мфо
+                required:
+                  - paymentId
+                  - paymentDate
+                  - paymentAmount
+                  - debtBalance
+                  - interestAmount
+                type: object
+              result:
+                const: success
+                type: string
+            required:
+              - result
+              - context
+    responses:
+      "200":
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/Success"
+                - $ref: "#/components/schemas/ValidationError"
+components:
+  schemas:
+    Success:
+      additionalProperties: false
+      description: "success"
+      properties:
+        context:
+          type: object
+        result:
+          enum:
+            - success
+          type: string
+      title: ""
+      type: object
+    ValidationError:
+      description: "Ошибка валидации"
+      properties:
+        errorDescription:
+          properties:
+            additional:
+              type: object
+            code:
+              enum:
+                - "00.01"
+              type: string
+            description:
+              enum:
+                - validationError
+              type: string
+            text:
+              enum:
+                - Ошибка валидации
+              type: string
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      title: ""
+      type: object

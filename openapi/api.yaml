@@ -1,0 +1,326 @@
+---
+openapi: 3.0.0
+info:
+  title: MFO Api Documetns
+  version: 1.0.0
+  x-logo:
+    url: "https://s91588.cdn.ngenix.net/shared/static/images/design-system/sravni-logo-sign.png"
+    backgroundColor: "#4a4747"
+    altText: "Sravni"
+    href: "https://www.sravni.ru/"
+  description: |
+    # Схемы взаимодействия
+
+    **Имеется 2 схемы взаимодействия с Сравни Ру:**
+    1) Интеграция с использованием СБП для привязки карты
+    2) Интеграция с использованием iframe для привязки карты 
+
+    ## Схема взаимодействия с использованием СБП для привязки карты
+
+    <div align="center">
+      <img alt="Workflow" src="../fullDeal.png#center" />
+    </div> 
+
+    **Описание**
+    1. Клиент выбирает раздел “Подобрать займ”
+    2. Система сравни делает запрос в систему МФО для первичной проверки пользователя по номеру телефона ([POST] /client/check). Система МФО синхронно отвечает на запрос с результатом проверки пользователя
+    3. Система сравни отображает клиенту анкету для заполнения
+    4. Клиент заполняет все поля анкеты и нажимает “Отправить заявку”
+    5. Система сравни, делает запрос в МФО ([POST] /application/create/) на создание заявки. Система МФО синхронно возвращает id заявки в системе МФО
+    6. Система МФО возвращает возможные офферы для клиента ([POST] application/{application_id}/offer)
+    7. Система сравни отображает полученный оффер клиенту
+    8. Клиент соглашается с представленным оффером
+    9. Система сравни делает запрос в систему мфо на подтверждение оффера клиентом ([POST]  application/{application_id}/offer/confirm)
+    10. Система сравни отображает клиенту форму для выбора банка в СБП
+    11. Пользователь выбирает банк для перевода через СБП
+    12. Система сравни передает данные клиента для перевода через СБП (POST] application/{application_id}/sbp}). Система МФО синхронно отвечает о возможности перевести деньги данным способом
+    13. Система сравни отправляет в систему мфо фото документов клиента ([POST] application/{application_id}/documents)
+    14. Система МФО присылает конечные данные по предложению с договором и сопутствующими документами ([POST] application/{application_id}/contract)
+    15. Система сравни запрашивает документы по контракту (15. [POST] application/{application_id}/documents/contract))
+    16. Система сравни отображает клиенту договор и конечные условия по займу÷
+    17. Клиент соглашается с условиями и нажимает “Подписать договор”
+    18. Система сравни запрашивает у системы МФО отправку кода на подписание ([POST] application/{application_id}/send-sms)
+    19. Система МФО отправляет смс клиенту 
+    20. Система сравни отображает форму для ввода кода клиенту
+    21. Клиент вводит код из смс 
+    22. Система сравни делает запрос в систему МФО для проверки кода пользователя((9. [POST] application/{application_id}/sms-confirm)). Система МФО синхронно отвечает введен ли код верно или с ошибкой
+
+    23. Система МФО уведомляет систему сравни о том что займ был выдан ([POST] application/{application_id}/confirm)
+
+    24. Система сравни запрашивает документы по подписанному контракту (15. [POST] application/{application_id}/documents/confirm)
+
+    25. Система сравни уведомляет клиента о том что займ был выдан
+
+
+    **Альтернативные сценарии**
+
+    ---
+    6.2.1. Система МФО присылает, в систему сравни, запрет по клиенту (клиент в черном списке, на клиенте есть мораторий, у клиента есть открытая заявка) ([POST] application/{application_id}/offer)
+
+    6.2.2. Система сравни сохраняет данные о запрете по клиенту
+
+    6.2.3. Система сравни уведомляет клиента о том что в данном мфо нельзя взять займ
+
+    Конец сценария
+
+    ---
+    14.2.1. Система МФО возвращает ошибку по документам/фото клиента ([POST] application/{application_id}/contract)
+
+    14.2.2. Система сравни отображает форму для повторного ввода документов клиенту
+
+    14.2.3. Клиент повторно загружает документы
+
+    14.2.4. Система сравни повторно отправляет документы клиента в систему МФО([POST] application/{application_id}/documents)
+
+    14.2.5. Система МФО присылает конечные данные по предложению с договором и сопутствующими документами ([POST] application/{application_id}/contract)
+
+    Продолжение сценария с пункта 15
+
+    ---
+    14.3.1. Система МФО присылает, в систему сравни, запрет по клиенту (клиент в черном списке, на клиенте есть мораторий, у клиента есть открытая заявка) ([POST] application/{application_id}/contract)
+
+    14.3.2. Система сравни сохраняет данные о запрете по клиенту
+
+    14.2.3. Система сравни уведомляет клиента о том что в данном мфо нельзя взять займ
+
+    Конец сценария
+
+    ## Схема взаимодействия с использованием iframe для привязки карты
+    
+    <div align="center">
+      <img alt="Workflow" src="../fullDealIFrame.png#center" />
+    </div>
+
+    **Описание**
+    1. Клиент выбирает раздел “Подобрать займ”
+    2. Система сравни делает запрос в систему МФО для первичной проверки пользователя по номеру телефона ([POST] /client/check). Система МФО синхронно отвечает на запрос с результатом проверки пользователя
+    3. Система сравни отображает клиенту анкету для заполнения
+    4. Клиент заполняет все поля анкеты и нажимает “Отправить заявку”
+    5. Система сравни, делает запрос в МФО ([POST] /application/create/) на создание заявки. Система МФО синхронно возвращает id заявки в системе МФО
+    6. Система МФО возвращает возможные офферы для клиента ([POST] application/{application_id}/offer)
+    7. Система сравни отображает полученный оффер клиенту
+    8. Клиент соглашается с представленным оффером
+    9. Система сравни делает запрос в систему мфо на подтверждение оффера клиентом ([POST]  application/{application_id}/offer/confirm)
+    10. Система сравни редиректит пользователя в iframe мфо для ввода карты
+    11. Пользователь вводит данные карты в iframe мфо
+    12. Мфо редиректит пользователя в сравни на урл полученный из создания заявки(2) в поле paymentInfo.successURL
+    13. Система сравни отправляет в систему мфо фото документов клиента ([POST] application/{application_id}/documents)
+    14. Система МФО присылает конечные данные по предложению с договором и сопутствующими документами ([POST] application/{application_id}/contract)
+    15. Система сравни запрашивает документы по контракту (15. [POST] application/{application_id}/documents/contract))
+    16. Система сравни отображает клиенту договор и конечные условия по займу
+    17. Клиент соглашается с условиями и нажимает “Подписать договор”
+    18. Система сравни запрашивает у системы МФО отправку кода на подписание ([POST] application/{application_id}/send-sms)
+    19. Система МФО отправляет смс клиенту 
+    20. Система сравни отображает форму для ввода кода клиенту
+    21. Клиент вводит код из смс 
+    22. Система сравни делает запрос в систему МФО для проверки кода пользователя((9. [POST] application/{application_id}/sms-confirm)). Система МФО синхронно отвечает введен ли код верно или с ошибкой
+    23. Система МФО уведомляет систему сравни о том что займ был выдан ([POST] application/{application_id}/confirm)
+    24. Система сравни запрашивает документы по подписанному контракту (15. [POST] application/{application_id}/documents/confirm)
+   
+    25. Система сравни уведомляет клиента о том что займ был выдан
+    
+    **Альтернативные сценарии**
+    
+    ---
+    6.2.1. Система МФО присылает, в систему сравни, запрет по клиенту (клиент в черном списке, на клиенте есть мораторий, у клиента есть открытая заявка) ([POST] application/{application_id}/offer)
+    
+    6.2.2. Система сравни сохраняет данные о запрете по клиенту
+    
+    6.2.3. Система сравни уведомляет клиента о том что в данном мфо нельзя взять займ
+    
+    Конец сценария
+    
+    ---
+    14.2.1. Система МФО возвращает ошибку по документам/фото клиента ([POST] application/{application_id}/contract)
+    
+    14.2.2. Система сравни отображает форму для повторного ввода документов клиенту
+    
+    14.2.3. Клиент повторно загружает документы
+    
+    14.2.4. Система сравни повторно отправляет документы клиента в систему МФО([POST] application/{application_id}/documents)
+    
+    14.2.5. Система МФО присылает конечные данные по предложению с договором и сопутствующими документами ([POST] application/{application_id}/contract)
+    
+    Продолжение сценария с пункта 15
+    
+    ---
+    14.3.1. Система МФО присылает, в систему сравни, запрет по клиенту (клиент в черном списке, на клиенте есть мораторий, у клиента есть открытая заявка) ([POST] application/{application_id}/contract)
+    
+    14.3.2. Система сравни сохраняет данные о запрете по клиенту
+    
+    14.2.3. Система сравни уведомляет клиента о том что в данном мфо нельзя взять займ
+    
+    Конец сценария
+  
+    # Описание работы методов
+
+    Каждый из методов имеет стандартную структуру ответов на запрос, как на стороне Сравни, так и на стороне партнера. На все успешно обработанные запросы, вне зависимости удалось ли выполнить запрашиваемое действие или нет, необходимо отвечать HTTP status 200.
+
+    ## Успешный ответ на запрос
+    В случае если запрос был успешно обработан и запрашиваемое действие удалось выполнить, ответ имеет структуру:
+
+      ```json
+      {
+        "result": "success",
+        "context": {}
+      }
+      ```
+    где:
+    
+    <code>result</code> - имеет значение <code>success</code>, тем самым подтверждая что задача выполнена
+    
+    <code>context</code> - объект с дополнительными данными
+
+    ## Запрос/ответ с ошибкой выполнения действий
+    
+    В случае если запрос был обработан успешно, но запрашиваемое действие не удалось выполнить, ответ будет иметь структуру:
+    ```json
+    {
+      "result": "error",
+      "errorDescription": {
+        "code": "string",
+        "description": "string",
+        "text": "string",
+        "additional": {},
+      }
+    }
+    ```
+    где:
+    
+    <code>result</code> - имеет значение <code>error</code>, показывая что действие невозможно выполнить
+    
+    <code>errorDescription</code> - объект с данными по проблеме/ошибке
+    
+    <code>errorDescription.code</code> - код ошибки, можно посмотреть в таблице ошибок и так же указан под каждым методом
+    
+    <code>errorDescription.description</code> - техническое описание ошибки
+    
+    <code>errorDescription.text</code>- описание ошибки для пользователя
+    
+    <code>errorDescription.additional</code> - дополнительные данные по ошибке
+
+    ## Ошибка валидации
+    По мимо этого, каждый запрос к сравни, может получить в ответ ошибку по валидации запроса и тоже имеет стандартный вид: 
+
+    ```json
+    {
+      "result": "error",
+      "errorDescription": {
+        "code": "00.01",
+        "description": "validationError",
+        "text": "Ошибка валидации",
+        "additional": {
+          "fields": [
+            {
+              "description": "Invalid type. Expected: number, given: string",
+              "invalidValue": "one",
+              "key": "context.contractInfo.amount",
+              "type": "invalid_type"
+            }
+          ]
+        }
+      }
+    }
+    ```
+    
+    Где в объекте <code>errorDescription</code> будет стандартный <code>code</code> = 00.01,  <code>description</code> = validationError а в массиве <code>additional.fields</code> будут лежать объекты:
+
+    <table>
+      <tr>
+        <td> <b>Ключ</b> </td>
+        <td> <b>Тип</b> </td>
+        <td> <b>Обязательное</b> </td>
+        <td> <b>Описание</b> </td>
+        <td> <b>Пример</b> </td>
+      </tr>
+      <tr>
+        <td><code>key</code></td>
+        <td>string</td>
+        <td>+</td>
+        <td>поле с ошибкой</td>
+        <td><code>context.contractInfo.amount</code></td>
+      </tr>
+      <tr>
+        <td><code>description</code></td>
+        <td>string</td>
+        <td>+</td>
+        <td>описание ошибки</td>
+        <td><code>Invalid type. Expected: number, given: string</code></td>
+      </tr>
+      <tr>
+        <td><code>invalidValue</code></td>
+        <td>string</td>
+        <td>+</td>
+        <td>ошибочное значение</td>
+        <td><code>one</code></td>
+      </tr>
+      <tr>
+        <td><code>type</code></td>
+        <td>string</td>
+        <td>+</td>
+        <td>тип ошибки</td>
+        <td><code>invalid_type</code></td>
+      </tr>
+    </table>
+
+    Возможные варианты в поле <code>type</code>:
+
+    - required - не передано обязательное поле
+    - invalid_type - не верный тип поля
+    - enum - переданное значение не входит в список возможных значений 
+    - string_gte - строка больше допустимой велечены
+    - string_lte - строка меньше допустимой велечены
+
+    ## Технические ошибки
+    
+    Все технические проблемы с тем, что запрос невозможно обработать имеют стандартные ответы:
+    
+    HTTP status 401 - Unauthorized - не авторизованный запрос
+    
+    HTTP status 403 - Forbidden - нет прав на выполнение запроса
+    
+    HTTP status 404 - страница не найден
+    
+    HTTP status 500 - Internal Server Error - внутренняя ошибка сервера
+
+
+components:
+  securitySchemes:
+    bearer:
+      scheme: Bearer
+      bearerFormat: JWT
+      type: http
+      name: Authorization
+
+tags:
+  - name: Методы на стороне Сравни РУ
+    description: |
+      Данные эндпоинты, реализованы на стороне Сравни Ру и необходимы для приема данных от партнера
+  - name: Методы на стороне МФО
+    description: |
+      Данные методы, необходимо реализовать на стороне Мфо и необходимы для получения данных от Сравни РУ
+paths:
+  /application/{applicationId}/confirm:
+    $ref: ./paths/applicationConfirm.yaml#/application~1{applicationId}~1confirm
+  /application/{applicationId}/close:
+    $ref: ./paths/applicationClose.yaml#/application~1{applicationId}~1close
+  /application/{applicationId}/contract:
+    $ref: ./paths/applicationContract.yaml#/application~1{applicationId}~1contract
+  /application/{applicationId}/delay:
+    $ref: ./paths/applicationDelay.yaml#/application~1{applicationId}~1delay
+  /application/{applicationId}/offer:
+    $ref: ./paths/applicationOffer.yaml#/application~1{applicationId}~1offer
+  /application/{applicationId}/payment:
+    $ref: ./paths/applicationPayment.yaml#/application~1{applicationId}~1payment
+  /application/{applicationId}/prolongation:
+    $ref: ./paths/applicationProlongation.yaml#/application~1{applicationId}~1prolongation
+  /client/check:
+    $ref: ./paths/clientCheck.yaml#/client~1check
+  /application/create:
+    $ref: ./paths/applicationCreate.yaml#/application~1create
+  /application/{applicationId}/documents:
+    $ref: ./paths/applicationDocuments.yaml#/application~1{applicationId}~1documents
+  /application/{applicationId}/offer/confirm:
+    $ref: ./paths/applicationOfferConfirm.yaml#/application~1{applicationId}~1offer~1confirm
+
+

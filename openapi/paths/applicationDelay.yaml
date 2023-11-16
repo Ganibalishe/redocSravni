@@ -1,0 +1,92 @@
+---
+application/{applicationId}/delay:
+  post:
+    description: Метод для уведомления Сравни о просрочке займа клиентом
+    parameters:
+      - description: Идентификатор заявки
+        in: path
+        name: applicationId
+        required: true
+        schema:
+          type: string
+    requestBody:
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            description: Метод для передачи просрочки по займу
+            properties:
+              context:
+                additionalProperties: false
+                properties:
+                  newTotalAmount:
+                    format: float
+                    type: number
+                    description: новая сумма к выплате
+                  overdueDate:
+                    format: date-time
+                    type: string
+                    description: дата просрочки
+                required:
+                  - overdueDate
+                  - newTotalAmount
+                type: object
+              result:
+                const: success
+                type: string
+            required:
+              - result
+              - context
+            title: Метод для передачи просрочки по займу
+            type: object
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/Success'
+              - $ref: '#/components/schemas/ValidationError'
+    summary: Метод для передачи просрочки по займу
+    tags:
+      - Методы на стороне Сравни РУ
+components:
+  schemas:
+    Success:
+      additionalProperties: false
+      description: 'success'
+      properties:
+        context:
+          type: object
+        result:
+          enum:
+            - success
+          type: string
+      title: ''
+      type: object
+    ValidationError:
+      description: 'Ошибка валидации'
+      properties:
+        errorDescription:
+          properties:
+            additional:
+              type: object
+            code:
+              enum:
+                - '00.01'
+              type: string
+            description:
+              enum:
+                - validationError
+              type: string
+            text:
+              enum:
+                - Ошибка валидации
+              type: string
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      title: ''
+      type: object

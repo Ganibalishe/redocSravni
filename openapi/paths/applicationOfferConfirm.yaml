@@ -1,0 +1,59 @@
+application/{applicationId}/offer/confirm:
+  post:
+    operationId: MfoApiController_confirmOffer
+    description: Метод для подтверждения выбранного оффера клиентом
+    summary: Метод подтверждения оффера
+    parameters:
+      - name: applicationId
+        required: true
+        in: path
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/MfoApiOfferConfirmRequest"
+    responses:
+      "200":
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/Success"
+                - $ref: "#/components/schemas/ValidationError"
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/Failed
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/BlackList
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ClientMoratorium
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/InappropriateRegion
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/Reject
+    tags:
+      - Методы на стороне МФО
+
+components:
+  schemas:
+    MfoApiOfferConfirmRequest:
+      type: object
+      title: MfoApiOfferConfirmRequest
+      required:
+        - offerId
+        - amount
+        - termValue
+        - termType
+      properties:
+        offerId:
+          type: string
+          description: id оффера, который выбрал пользователь
+        amount:
+          type: number
+          description: сумма выбранная клиентом
+        termValue:
+          type: integer
+          description: срок займа
+        termType:
+          type: string
+          description: тип периода займа
+          enum:
+            - days
+            - months

@@ -1,0 +1,180 @@
+---
+application/{applicationId}/contract:
+  post:
+    description: Метод получения конечного контракта
+    parameters:
+      - description: Идентификатор заявки
+        in: path
+        name: applicationId
+        required: true
+        schema:
+          type: string
+    requestBody:
+      content:
+        application/json:
+          schema: 
+            oneOf:
+              - $ref: '#/components/schemas/Contract'
+              - $ref: ../errors/defaultRequestError.yaml#/components/schemas/OpenApplications
+              - $ref: ../errors/defaultRequestError.yaml#/components/schemas/BlackList
+              - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ClientMoratorium
+              - $ref: ../errors/defaultRequestError.yaml#/components/schemas/InappropriateRegion
+              - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ManyPhoneNumbers
+              - $ref: ../errors/defaultRequestError.yaml#/components/schemas/DuplicatePhoneNumber
+              - $ref: ../errors/defaultRequestError.yaml#/components/schemas/Reject
+              - $ref: ../errors/bankError.yaml#/components/schemas/BankIdentifier
+              - $ref: ../errors/bankError.yaml#/components/schemas/AccountNotFound
+              - $ref: ../errors/bankError.yaml#/components/schemas/LimitExceeded
+              - $ref: ../errors/bankError.yaml#/components/schemas/BankBlocked
+              - $ref: ../errors/bankError.yaml#/components/schemas/SbpBlocked
+              - $ref: ../errors/bankError.yaml#/components/schemas/PaymentSystemError
+              - $ref: ../errors/bankError.yaml#/components/schemas/BankRefusal
+              - $ref: ../errors/defaultRequestError.yaml#/components/schemas/DocumentsRejected
+              - $ref: ../errors/bankError.yaml#/components/schemas/BankCardRefused
+
+    responses:
+      '200':
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                context:
+                  type: object
+                result:
+                  enum:
+                    - success
+                  type: string
+              title: ''
+              type: object
+        description: Success
+      '400':
+        content:
+          application/json:
+            schema:
+              description: ''
+              properties:
+                errorDescription:
+                  properties:
+                    additional:
+                      type: object
+                    code:
+                      enum:
+                        - '00.01'
+                      type: string
+                    description:
+                      enum:
+                        - validationError
+                      type: string
+                    text:
+                      enum:
+                        - ÐžÑˆÐ¸Ð±ÐºÐ° Ð²Ð°Ð»Ð¸Ð´Ð°Ñ†Ð¸Ð¸
+                      type: string
+                  type: object
+                result:
+                  enum:
+                    - error
+                  type: string
+              title: ''
+              type: object
+        description: Error
+    summary: Метод получения конечного контракта
+    tags:
+      - Методы на стороне Сравни РУ
+components:
+  schemas:
+    Contract:
+      description: Передача контракта
+      properties:
+        context:
+          properties:
+            contractInfo:
+              properties:
+                amount:
+                  description: сумма займа
+                  format: float
+                  type: number
+                contractExpire:
+                  description: дата и время истечения контракта
+                  format: date-time
+                  type: string
+                contractNumber:
+                  description: номер договора
+                  type: string
+                firstPaymentDate:
+                  description: дата первого платежа
+                  format: date
+                  type: string
+                id:
+                  description: идентификатор контракта
+                  type: string
+                interestRate:
+                  description: процентная ставка
+                  format: int32
+                  type: number
+                interestTerm:
+                  description: период ставки
+                  enum:
+                    - day
+                    - week
+                    - month
+                    - year
+                  type: string
+                paymentAmount:
+                  description: размер платежа
+                  format: float
+                  type: number
+                paymentCount:
+                  description: кол-во платежей
+                  format: int32
+                  type: number
+                paymentTermType:
+                  description: тип периода платежа
+                  enum:
+                    - days
+                    - months
+                  type: string
+                paymentTermValue:
+                  description: периодичность платежа
+                  format: int32
+                  type: number
+                repaymentDate:
+                  description: конечная дата погашения займа
+                  format: date
+                  type: string
+                totalAmount:
+                  description: общая сумма к возврату
+                  format: float
+                  type: number
+              required:
+                - id
+                - contractNumber
+                - contractExpire
+                - amount
+                - interestRate
+                - interestTerm
+                - totalAmount
+                - repaymentDate
+                - firstPaymentDate
+                - paymentAmount
+              type: object
+            createdAt:
+              format: date-time
+              type: string
+            updatedAt:
+              format: date-time
+              type: string
+          required:
+            - createdAt
+            - updatedAt
+            - contractInfo
+          type: object
+        result:
+          enum:
+            - success
+          type: string
+      required:
+        - result
+        - context
+      title: Контракт
+      type: object

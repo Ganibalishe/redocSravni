@@ -1,0 +1,8 @@
+{
+    "name": "front",
+    "version": "0.0.0",
+    "license": "MIT",
+    "scripts": {
+        "docs:redoc": "browser-sync start --config browser-sync.js"
+    }
+}

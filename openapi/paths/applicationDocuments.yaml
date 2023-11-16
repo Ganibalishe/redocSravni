@@ -1,0 +1,20 @@
+application/{applicationId}/documents:
+  post:
+    description: Метод получения документов от Сравни ру
+    summary: Метод получения документов
+    operationId: MfoApiController_sendDocuments
+    tags:
+      - Методы на стороне МФО
+    requestBody: 
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              file: 
+                type: string
+                format: binary
+
+    responses:
+      '201':
+        description: ''

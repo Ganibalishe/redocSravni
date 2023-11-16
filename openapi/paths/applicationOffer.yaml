@@ -1,0 +1,194 @@
+---
+application/{applicationId}/offer:
+  post:
+    description: Метод передачи оффера
+    parameters:
+      - description: Идентификатор заявки
+        in: path
+        name: applicationId
+        required: true
+        schema:
+          type: string
+    requestBody:
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: "#/components/schemas/OfferRequest"
+              - $ref: ../errors/defaultRequestError.yaml#/components/schemas/OpenApplications
+              - $ref: ../errors/defaultRequestError.yaml#/components/schemas/BlackList
+              - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ClientMoratorium
+              - $ref: ../errors/defaultRequestError.yaml#/components/schemas/InappropriateRegion
+              - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ManyPhoneNumbers
+              - $ref: ../errors/defaultRequestError.yaml#/components/schemas/DuplicatePhoneNumber
+              - $ref: ../errors/defaultRequestError.yaml#/components/schemas/Reject
+    responses:
+      "200":
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/Success"
+                - $ref: "#/components/schemas/ValidationError"
+    summary: Метод передачи оффера
+    tags:
+      - Методы на стороне Сравни РУ
+components:
+  schemas:
+    Offer:
+      properties:
+        amount:
+          description: сумма займа
+          format: float
+          type: number
+        interestRate:
+          description: процентная ставка в день
+          format: float
+          type: number
+        offerExpire:
+          description: срок действия оффера
+          format: date-time
+          type: string
+        offerId:
+          type: string
+        paymentAmount:
+          description: размер платежа
+          format: float
+          type: number
+        paymentDetails:
+          description: объект, содержащий данные по привязки банковских реквизитов. Является опциональным и передается в случае работы через банковские карты а не СБП
+          properties:
+            createdAt:
+              description: дата и время генерации URL
+              type: string
+            expiresAt:
+              description: дата и время окончания действия URL
+              type: string
+            url:
+              description: URL, для редиректа пользователя, где будет привязана карта
+              type: string
+          required:
+            - url
+            - createdAt
+            - expirationAt
+          type: object
+        paymentTermType:
+          description: тип периода платежа
+          enum:
+            - days
+            - months
+          type: string
+        paymentTermValue:
+          description: периодичность платежа
+          format: int32
+          type: number
+        repaymentDate:
+          description: конечная дата погашения займа
+          format: date-time
+          type: string
+        requiredDocuments:
+          description: массив с типами документов, необходимых для идентификации клиента
+          items:
+            enum:
+              - passportMain
+              - registration
+              - selfie
+            type: string
+          type: array
+        termType:
+          description: тип периода займа
+          enum:
+            - days
+            - months
+          type: string
+        termValue:
+          description: срок займа
+          format: int32
+          type: number
+        totalAmount:
+          description: общая сумма к возврату
+          format: float
+          type: number
+        type:
+          description: тип продукта
+          enum:
+            - il
+            - pdl
+          type: string
+      required:
+        - offerId
+        - offerExpire
+        - type
+        - amount
+        - termValue
+        - termType
+        - interestRate
+        - totalAmount
+        - repaymentDate
+        - paymentAmount
+        - paymentTermValue
+        - paymentTermType
+        - requiredDocuments
+      type: object
+    OfferRequest:
+      description: Метод передачи оффера
+      properties:
+        context:
+          properties:
+            createdAt:
+              format: date-time
+              type: string
+            offers:
+              items:
+                - $ref: "#/components/schemas/Offer"
+              type: array
+          required:
+            - createdAt
+            - offers
+          type: object
+        result:
+          enum:
+            - success
+          type: string
+      required:
+        - result
+        - context
+      title: Оффер
+      type: object
+    Success:
+      description: success
+      properties:
+        context:
+          type: object
+        result:
+          enum:
+            - success
+          type: string
+      title: "Success"
+      type: object
+    ValidationError:
+      description: Ошибка валидации
+      properties:
+        errorDescription:
+          properties:
+            additional:
+              type: object
+            code:
+              enum:
+                - "00.01"
+              type: string
+            description:
+              enum:
+                - validationError
+              type: string
+            text:
+              enum:
+                - Ошибка валидации
+              type: string
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      title: "ValidationError"
+      type: object
