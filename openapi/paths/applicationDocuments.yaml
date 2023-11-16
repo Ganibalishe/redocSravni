@@ -1,5 +1,12 @@
 application/{applicationId}/documents:
   post:
+    parameters:
+      - description: Идентификатор заявки
+        in: path
+        name: applicationId
+        required: true
+        schema:
+          type: string
     description: Метод получения документов от Сравни ру
     summary: Метод получения документов
     operationId: MfoApiController_sendDocuments

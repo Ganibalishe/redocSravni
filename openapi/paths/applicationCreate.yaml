@@ -1,5 +1,6 @@
 application/create:
   post:
+    operationId: MfoApiController_create
     description: Метод, для запроса к партнеру на создание заявки по займу
     summary: Метод создания заявки
     requestBody:

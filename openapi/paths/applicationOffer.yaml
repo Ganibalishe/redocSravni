@@ -1,6 +1,7 @@
 ---
 application/{applicationId}/offer:
   post:
+    operationId: MfoCallBackController_offer
     description: Метод передачи оффера
     parameters:
       - description: Идентификатор заявки
