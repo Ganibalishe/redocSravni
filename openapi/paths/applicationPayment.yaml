@@ -1,5 +1,6 @@
 application/{applicationId}/payment:
   post:
+    security: []
     operationId: MfoCallBackController_payment
     summary: Метод для передачи оплаты по займу
     description: Метод для уведомления Сравни об оплате по займу

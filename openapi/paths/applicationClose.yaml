@@ -1,6 +1,7 @@
 ---
 application/{applicationId}/close:
   post:
+    security: []
     operationId: MfoCallBackController_close
     summary: Метод закрытия займа
     description: Метод для уведомления Сравни о закрытие займа клиентом

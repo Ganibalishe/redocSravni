@@ -1,5 +1,6 @@
 application/{applicationId}/offer/confirm:
   post:
+    security: []
     operationId: MfoApiController_confirmOffer
     description: Метод для подтверждения выбранного оффера клиентом
     summary: Метод подтверждения оффера

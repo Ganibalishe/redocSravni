@@ -1,6 +1,7 @@
 ---
 application/{applicationId}/confirm:
   post:
+    security: []
     operationId: MfoCallBackController_confirm
     description: Метод, для уведомления Сравни, о том что займ был выдан клиенту
     parameters:

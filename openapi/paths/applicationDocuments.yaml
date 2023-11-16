@@ -1,5 +1,6 @@
 application/{applicationId}/documents:
   post:
+    security: []
     parameters:
       - description: Идентификатор заявки
         in: path

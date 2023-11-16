@@ -1,5 +1,6 @@
 client/check:
   post:
+    security: []
     operationId: MfoApiController_check
     description: Метод, для первичной проверки клиента
     summary: Метод, для первичной проверки клиента

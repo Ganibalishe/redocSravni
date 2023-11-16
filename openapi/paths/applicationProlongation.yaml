@@ -1,5 +1,6 @@
 application/{applicationId}/prolongation:
   post:
+    security: []
     operationId: MfoCallBackController_prolongation
     summary: Метод для передачи данных о пролонгации займа
     description: Метод для передачи данных о пролонгации займа

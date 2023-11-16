@@ -1,6 +1,7 @@
 ---
 application/{applicationId}/delay:
   post:
+    security: []
     operationId: MfoCallBackController_Delay
     description: Метод для уведомления Сравни о просрочке займа клиентом
     parameters:
