@@ -15,7 +15,7 @@ client/check:
             schema:
               oneOf:
                 - $ref: "#/components/schemas/Success"
-                - $ref: "#/components/schemas/ValidationError"
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ValidationError
                 - $ref: "#/components/schemas/Failed"
                 - $ref: "#/components/schemas/BlackList"
                 - $ref: "#/components/schemas/OpenApplications"

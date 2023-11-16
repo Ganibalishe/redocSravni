@@ -48,7 +48,8 @@ application/{applicationId}/payment:
                   - interestAmount
                 type: object
               result:
-                const: success
+                enum:
+                  - success
                 type: string
             required:
               - result
@@ -60,7 +61,7 @@ application/{applicationId}/payment:
             schema:
               oneOf:
                 - $ref: "#/components/schemas/Success"
-                - $ref: "#/components/schemas/ValidationError"
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ValidationError
 components:
   schemas:
     Success:

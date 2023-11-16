@@ -22,7 +22,7 @@ application/{applicationId}/close:
             schema:
               oneOf:
                 - $ref: '#/components/schemas/Success'
-                - $ref: '#/components/schemas/ValidationError'
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ValidationError
     tags:
       - Методы на стороне Сравни РУ
 components:
@@ -41,7 +41,8 @@ components:
             - closingDate
           type: object
         result:
-          const: success
+          enum:
+            - success
           type: string
       required:
         - result

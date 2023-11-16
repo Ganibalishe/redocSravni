@@ -22,7 +22,7 @@ application/{applicationId}/offer/confirm:
             schema:
               oneOf:
                 - $ref: "#/components/schemas/Success"
-                - $ref: "#/components/schemas/ValidationError"
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ValidationError
                 - $ref: ../errors/defaultRequestError.yaml#/components/schemas/Failed
                 - $ref: ../errors/defaultRequestError.yaml#/components/schemas/BlackList
                 - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ClientMoratorium

@@ -29,7 +29,7 @@ application/{applicationId}/offer:
             schema:
               oneOf:
                 - $ref: "#/components/schemas/Success"
-                - $ref: "#/components/schemas/ValidationError"
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ValidationError
     summary: Метод передачи оффера
     tags:
       - Методы на стороне Сравни РУ

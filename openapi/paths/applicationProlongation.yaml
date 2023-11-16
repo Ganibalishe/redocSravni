@@ -36,7 +36,8 @@ application/{applicationId}/prolongation:
                   - newTotalAmount
                 type: object
               result:
-                const: success
+                enum:
+                  - success
                 type: string
             required:
               - result
@@ -48,7 +49,7 @@ application/{applicationId}/prolongation:
             schema:
               oneOf:
                 - $ref: "#/components/schemas/Success"
-                - $ref: "#/components/schemas/ValidationError"
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ValidationErrorv
 components:
   schemas:
     Success:

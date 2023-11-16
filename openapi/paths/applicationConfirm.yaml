@@ -28,7 +28,7 @@ application/{applicationId}/confirm:
             schema:
               oneOf:
                 - $ref: "#/components/schemas/Success"
-                - $ref: "#/components/schemas/ValidationError"
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ValidationError
     summary: Метод подтверждения выдачи займа
     tags:
       - Методы на стороне Сравни РУ
