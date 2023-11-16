@@ -1,5 +1,7 @@
 ---
 openapi: 3.0.0
+servers:
+  - url: //sravni.swagger.io/v2
 info:
   title: MFO Api Documetns
   version: 1.0.0
