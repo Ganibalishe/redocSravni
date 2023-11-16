@@ -17,6 +17,7 @@ application/{applicationId}/offer/confirm:
             "$ref": "#/components/schemas/MfoApiOfferConfirmRequest"
     responses:
       "200":
+        description:  ''
         content:
           application/json:
             schema:

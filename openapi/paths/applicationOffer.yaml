@@ -24,6 +24,7 @@ application/{applicationId}/offer:
               - $ref: ../errors/defaultRequestError.yaml#/components/schemas/Reject
     responses:
       "200":
+        description:  ''
         content:
           application/json:
             schema:

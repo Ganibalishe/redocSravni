@@ -282,16 +282,6 @@ info:
     HTTP status 404 - страница не найден
     
     HTTP status 500 - Internal Server Error - внутренняя ошибка сервера
-
-
-components:
-  securitySchemes:
-    bearer:
-      scheme: Bearer
-      bearerFormat: JWT
-      type: http
-      name: Authorization
-
 tags:
   - name: Методы на стороне Сравни РУ
     description: |
