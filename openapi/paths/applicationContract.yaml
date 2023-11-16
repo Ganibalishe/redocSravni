@@ -1,6 +1,7 @@
 ---
 application/{applicationId}/contract:
   post:
+    operationId: MfoCallBackController_conract
     description: Метод получения конечного контракта
     parameters:
       - description: Идентификатор заявки
