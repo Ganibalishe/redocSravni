@@ -80,7 +80,8 @@ components:
               properties:
                 experationAt:
                   example: '2023-12-01'
-                  type: date
+                  type: string
+                  format: date
               required:
                 - expiresAt
               type: object

@@ -258,10 +258,12 @@ components:
                   type: string
                   description: новый урл iframe для привязки карты
                 createdAt:
-                  type: date-time
+                  type: string
+                  format: date-time
                   description: время создания урла
                 expiresAt:
-                  type: date-time
+                  type: string
+                  format: date-time
                   description: время протухания урла
               required:
                 - url
