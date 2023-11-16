@@ -16,11 +16,11 @@ client/check:
               oneOf:
                 - $ref: "#/components/schemas/Success"
                 - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ValidationError
-                - $ref: "#/components/schemas/Failed"
-                - $ref: "#/components/schemas/BlackList"
-                - $ref: "#/components/schemas/OpenApplications"
-                - $ref: "#/components/schemas/ClientMoratorium"
-                - $ref: "#/components/schemas/Reject"
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/Failed
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/BlackList
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/OpenApplications
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ClientMoratorium
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/Reject
     tags:
       - Методы на стороне МФО
 components:
