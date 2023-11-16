@@ -44,12 +44,13 @@ application/{applicationId}/prolongation:
               - context
     responses:
       "200":
+        description:  ''
         content:
           application/json:
             schema:
               oneOf:
                 - $ref: "#/components/schemas/Success"
-                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ValidationErrorv
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ValidationError
 components:
   schemas:
     Success:
