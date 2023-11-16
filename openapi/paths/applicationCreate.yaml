@@ -14,7 +14,7 @@ application/create:
             schema:
               oneOf:
                 - $ref: "#/components/schemas/CreateApplicationResponse"
-                - $ref: "#/components/schemas/ValidationError"
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ValidationError
                 - $ref: ../errors/defaultRequestError.yaml#/components/schemas/Failed
                 - $ref: ../errors/defaultRequestError.yaml#/components/schemas/OpenApplications
                 - $ref: ../errors/defaultRequestError.yaml#/components/schemas/BlackList

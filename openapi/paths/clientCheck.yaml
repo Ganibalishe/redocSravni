@@ -25,6 +25,18 @@ client/check:
       - Методы на стороне МФО
 components:
   schemas:
+    Success:
+      additionalProperties: false
+      description: 'success'
+      properties:
+        context:
+          type: object
+        result:
+          enum:
+            - success
+          type: string
+      title: ''
+      type: object
     MfoApiCheckRequest:
       type: object
       title: MfoApiCheckRequest

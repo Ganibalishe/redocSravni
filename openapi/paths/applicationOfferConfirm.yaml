@@ -33,6 +33,18 @@ application/{applicationId}/offer/confirm:
 
 components:
   schemas:
+    Success:
+      additionalProperties: false
+      description: 'success'
+      properties:
+        context:
+          type: object
+        result:
+          enum:
+            - success
+          type: string
+      title: ''
+      type: object
     MfoApiOfferConfirmRequest:
       type: object
       title: MfoApiOfferConfirmRequest

@@ -35,6 +35,18 @@ application/{applicationId}/offer:
       - Методы на стороне Сравни РУ
 components:
   schemas:
+    Success:
+      additionalProperties: false
+      description: 'success'
+      properties:
+        context:
+          type: object
+        result:
+          enum:
+            - success
+          type: string
+      title: ''
+      type: object
     Offer:
       properties:
         amount:
@@ -154,17 +166,6 @@ components:
         - result
         - context
       title: Оффер
-      type: object
-    Success:
-      description: success
-      properties:
-        context:
-          type: object
-        result:
-          enum:
-            - success
-          type: string
-      title: "Success"
       type: object
     ValidationError:
       description: Ошибка валидации
