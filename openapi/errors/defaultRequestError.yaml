@@ -540,3 +540,102 @@ components:
           type: string
       title: ''
       type: object
+    ResendsLimitReached:
+      title: 'Превышен лимит запроса смс'
+      description: 'Превышен лимит запроса смс'
+      properties:
+        errorDescription:
+          properties:
+            additional:
+              type: object
+              properties:
+                attemptsCount: 
+                  type: integer
+                  description: количество оставшихся попыток ввода кода
+            code:
+              enum:
+                - '05.03'
+              type: string
+            description:
+              enum:
+                - resendsLimitReached
+              type: string
+            text:
+              enum:
+                - Превышен лимит запроса СМС
+              type: string
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      type: object
+    IncorrectСode:
+      title: Некорректный код
+      description: 'Некорректный код'
+      properties:
+        errorDescription:
+          properties:
+            additional:
+              type: object
+              properties:
+                attemptsCount:
+                  type: integer
+                  description: количество оставшихся попыток ввода кода
+                resendsCount:
+                  type: integer
+                  description: количество оставшихся попыток переотправки смс
+            code:
+              enum:
+                - '05.01'
+              type: string
+            description:
+              enum:
+                - incorrectСode
+              type: string
+            text:
+              enum:
+                - Некорректный код
+              type: string
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      type: object
+    IncorrectcodeLength:
+      title: Некорректный код
+      description: 'Некорректный код'
+      properties:
+        errorDescription:
+          properties:
+            additional:
+              type: object
+              properties:
+                attemptsCount:
+                  type: integer
+                  description: количество оставшихся попыток ввода кода
+                resendsCount:
+                  type: integer
+                  description: количество оставшихся попыток переотправки смс
+                codeLength: 
+                  type: integer
+                  description: Длина смс-кода
+            code:
+              enum:
+                - '05.02'
+              type: string
+            description:
+              enum:
+                - incorrectcodeLength
+              type: string
+            text:
+              enum:
+                - Неверная длина кода
+              type: string
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      type: object

@@ -1,0 +1,45 @@
+application/{applicationId}/sms-confirm:
+  post:
+    security: []
+    description: Метод для подтверждения кода из смс 
+    summary: Метод подтверждения кода из смс
+    operationId: MfoApiController_confirmSms
+    parameters:
+      - name: applicationId
+        required: true
+        in: path
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/MfoApiSmsConfirmRequest"
+    responses:
+      "200":
+        description: ""
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/Success"
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ValidationError
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/Failed
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/BlackList
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ClientMoratorium
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/Reject
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/IncorrectСode
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/IncorrectcodeLength
+    tags:
+      - Методы на стороне МФО
+components:
+  schemas:
+    MfoApiSmsConfirmRequest:
+      type: object
+      title: MfoApiSmsConfirmRequest
+      required:
+        - enteredCode
+      properties:
+        enteredCode:
+          type: integer

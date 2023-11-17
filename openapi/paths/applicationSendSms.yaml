@@ -1,0 +1,57 @@
+application/{applicationId}/send-sms:
+  get:
+    security: []
+    description: Метод для запроса отправки смс клиенту
+    summary: Метод запроса смс
+    operationId: MfoApiController_sendSms
+    parameters:
+    - name: applicationId
+      required: true
+      in: path
+      schema:
+        type: string
+    responses:
+      "200":
+        description: ""
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/Success"
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ValidationError
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/Failed
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/BlackList
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ClientMoratorium
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/Reject
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ResendsLimitReached
+
+    tags:
+      - Методы на стороне МФО
+components:
+  schemas:
+    Success:
+      additionalProperties: false
+      description: "success"
+      properties:
+        result:
+          enum:
+            - success
+          type: string
+        context:
+          type: object
+          properties:
+            attemptsCount: 
+              type: integer
+              description: количество оставшихся попыток ввода кода
+            resendsCount:
+              type: integer
+              description: количество оставшихся попыток переотправки смс
+            codeLength: 
+              type: integer
+              description: Длина смс-кода
+      required:
+        - result
+        - context
+      title: "Смс отправлен"
+      type: object
+    

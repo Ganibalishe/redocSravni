@@ -314,5 +314,11 @@ paths:
     $ref: ./paths/applicationDocuments.yaml#/application~1{applicationId}~1documents
   /application/{applicationId}/offer/confirm:
     $ref: ./paths/applicationOfferConfirm.yaml#/application~1{applicationId}~1offer~1confirm
-
-
+  /application/{applicationId}/sbp:
+    $ref: ./paths/applicationSbp.yaml#/application~1{applicationId}~1sbp
+  /application/{applicationId}/send-sms:
+    $ref: ./paths/applicationSendSms.yaml#/application~1{applicationId}~1send-sms
+  /application/{applicationId}/sms-confirm:
+    $ref: ./paths/applicationSmsConfirm.yaml#/application~1{applicationId}~1sms-confirm
+  /application/{applicationId}/documents/{type}:
+    $ref: ./paths/applicationDocType.yaml#/application~1{applicationId}~1documents~1{type}

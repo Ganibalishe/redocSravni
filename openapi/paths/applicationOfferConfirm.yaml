@@ -39,12 +39,12 @@ components:
       additionalProperties: false
       description: 'success'
       properties:
-        context:
-          type: object
         result:
           enum:
             - success
           type: string
+        context:
+          type: object
       title: ''
       type: object
     MfoApiOfferConfirmRequest:

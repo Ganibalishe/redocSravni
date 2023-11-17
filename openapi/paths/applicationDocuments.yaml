@@ -22,7 +22,6 @@ application/{applicationId}/documents:
               file: 
                 type: string
                 format: binary
-
     responses:
       '201':
         description: ''

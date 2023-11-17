@@ -1,0 +1,43 @@
+application/{applicationId}/documents/{type}:
+  get:
+    security: []
+    summary: Метод для передачи документов Сравни РУ
+    description:
+    operationId: MfoApiController_getDocumentsByType
+    parameters:
+      - name: applicationId
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: type
+        required: true
+        in: path
+        schema:
+          type: string
+          enum:
+            - contract
+            - confirm
+    tags:
+      - Методы на стороне МФО
+    responses:
+      "200":
+        description: |
+          В ответе предаем файлы объедененные по типу: 
+          ```json
+          Content-Type:  multipart/form-data
+
+          --<разделитель>
+          Content-Disposition: form-data; name="Contract";
+          filename="my-contract.pdf"
+          Content-Type: application/pdf
+          (пустая строка)
+          (двоичное содержимое файла с контрактом)
+
+          --<разделитель>
+          Content-Disposition: form-data; name="Rules";
+          filename="rules-for-you-.pdf"
+          Content-Type: application/pdf
+          (пустая строка)
+          (двоичное содержимое файла с правилами)
+          ```

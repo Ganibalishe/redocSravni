@@ -1,0 +1,63 @@
+application/{applicationId}/sbp:
+  post:
+    security: []
+    description: Метод для передачи данных по банку клиента
+    summary: Метод для передачи данных СБП
+    operationId: MfoApiController_sendSbpInfo
+    parameters:
+      - name: applicationId
+        required: true
+        in: path
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/MfoApiSbpRequest"
+    responses:
+      "200":
+        description: ""
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/Success"
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ValidationError
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/Failed
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/Reject
+                - $ref: ../errors/bankError.yaml#/components/schemas/BankIdentifier
+                - $ref: ../errors/bankError.yaml#/components/schemas/AccountNotFound
+                - $ref: ../errors/bankError.yaml#/components/schemas/LimitExceeded
+                - $ref: ../errors/bankError.yaml#/components/schemas/BankBlocked
+                - $ref: ../errors/bankError.yaml#/components/schemas/SbpBlocked
+                - $ref: ../errors/bankError.yaml#/components/schemas/PaymentSystemError
+                - $ref: ../errors/bankError.yaml#/components/schemas/BankRefusal
+    tags:
+      - Методы на стороне МФО
+components:
+  schemas:
+    MfoApiSbpRequest:
+      type: object
+      title: MfoApiSbpRequest
+      required:
+        - bankId
+      properties:
+        bankId:
+          type: string
+    Success:
+      additionalProperties: false
+      description: "success"
+      properties:
+        result:
+          enum:
+            - success
+          type: string
+        context:
+          type: object
+      required:
+        - result
+        - context
+      title: ""
+      type: object
