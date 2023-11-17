@@ -43,3 +43,19 @@ components:
       properties:
         enteredCode:
           type: integer
+    Success:
+      additionalProperties: false
+      description: "success"
+      properties:
+        result:
+          enum:
+            - success
+          type: string
+        context:
+          type: object
+      required:
+        - result
+        - context
+      title: ""
+      type: object
+
