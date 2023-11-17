@@ -2,7 +2,7 @@ application/{applicationId}/documents/{type}:
   get:
     security: []
     summary: Метод для передачи документов Сравни РУ
-    description: ""
+    description: ''
     operationId: MfoApiController_getDocumentsByType
     parameters:
       - name: applicationId
