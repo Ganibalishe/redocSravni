@@ -319,6 +319,6 @@ paths:
   /application/{applicationId}/send-sms:
     $ref: ./paths/applicationSendSms.yaml#/application~1{applicationId}~1send-sms
   /application/{applicationId}/sms-confirm:
-    $ref: ./paths/applicationSmsConfirm.yaml#/application~1{applicationId}~1sms-confirm
+    $ref: ./paths/applicationSmsconfirm.yaml#/application~1{applicationId}~1sms-confirm
   /application/{applicationId}/documents/{type}:
     $ref: ./paths/applicationDocType.yaml#/application~1{applicationId}~1documents~1{type}
