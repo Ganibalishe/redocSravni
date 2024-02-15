@@ -1,0 +1,83 @@
+application/{applicationId}/card-check:
+  post:
+    security: []
+    operationId: MfoCallBackController_card-check
+    summary: Метод подтверждения привязки карты
+    description: Метод для уведомления Сравни о том что карта привязана успешно
+    parameters:
+      - description: Идентификатор заявки
+        in: path
+        name: applicationId
+        required: true
+        schema:
+          type: string
+    requestBody:
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/SuccessRequest'
+              - $ref: ../errors/bankError.yaml#/components/schemas/BankCardRefused
+    responses:
+      '200':
+        description: ''
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/Success'
+                - $ref: ../errors/defaultRequestError.yaml#/components/schemas/ValidationError
+    tags:
+      - Методы на стороне Сравни РУ
+components:
+  schemas:
+    SuccessRequest:
+      additionalProperties: false
+      description: 'Карта привязана'
+      properties:
+        result:
+          enum:
+            - success
+          type: string
+        context:
+          type: object
+      title: 'Карта привязана'
+      type: object
+    Success:
+      additionalProperties: false
+      description: 'success'
+      properties:
+        context:
+          type: object
+        result:
+          enum:
+            - success
+          type: string
+      title: ''
+      type: object
+    ValidationError:
+      description: 'Ошибка валидации'
+      properties:
+        errorDescription:
+          properties:
+            additional:
+              type: object
+            code:
+              enum:
+                - '00.01'
+              type: string
+            description:
+              enum:
+                - validationError
+              type: string
+            text:
+              enum:
+                - Ошибка валидации
+              type: string
+          type: object
+        result:
+          enum:
+            - error
+          type: string
+      title: ''
+      type: object

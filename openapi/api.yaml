@@ -322,3 +322,5 @@ paths:
     $ref: ./paths/applicationSmsconfirm.yaml#/application~1{applicationId}~1sms-confirm
   /application/{applicationId}/documents/{type}:
     $ref: ./paths/applicationDocType.yaml#/application~1{applicationId}~1documents~1{type}
+  /application/{applicationId}/card-check:
+    $ref: ./paths/applicationCardCheck.yaml#/application~1{applicationId}~1card-check
